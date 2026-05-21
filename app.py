@@ -29,8 +29,6 @@ st.markdown("""
     color: white;
 }
 
-/* Main Title */
-
 .main-title {
     font-size: 56px;
     font-weight: 700;
@@ -44,14 +42,10 @@ st.markdown("""
     margin-bottom: 35px;
 }
 
-/* Sidebar */
-
 section[data-testid="stSidebar"] {
     background: #0B1120;
     border-right: 1px solid rgba(255,255,255,0.05);
 }
-
-/* Buttons */
 
 .stButton>button {
 
@@ -72,8 +66,6 @@ section[data-testid="stSidebar"] {
     font-weight: 600;
 }
 
-/* Inputs */
-
 .stTextInput input,
 .stTextArea textarea {
 
@@ -82,15 +74,11 @@ section[data-testid="stSidebar"] {
     border-radius: 12px;
 }
 
-/* Select */
-
 .stSelectbox div[data-baseweb="select"] {
 
     background-color: #111827;
     border-radius: 12px;
 }
-
-/* Chat Cards */
 
 [data-testid="stChatMessage"] {
 
@@ -104,8 +92,6 @@ section[data-testid="stSidebar"] {
 
     margin-bottom: 20px;
 }
-
-/* Chat Input */
 
 .stChatInput textarea {
 
@@ -231,8 +217,6 @@ with st.sidebar:
 
     if st.button("Start Interview"):
 
-        # VALIDATION
-
         if not target_role.strip():
 
             st.sidebar.error(
@@ -259,8 +243,6 @@ with st.sidebar:
             st.session_state.qualifications = qualifications
             st.session_state.focus_area = focus_area
 
-            # RESUME PARSING
-
             resume_text = ""
 
             if resume:
@@ -271,13 +253,11 @@ with st.sidebar:
 
             st.session_state.resume_text = resume_text
 
-            # INTERVIEW HISTORY
-
             st.session_state.history = """
-            This is the beginning of the interview.
-            Avoid greetings and introductions.
-            Start directly with a concise interview question.
-            """
+Start the interview naturally.
+Avoid greetings and introductions.
+Ask concise realistic interview questions.
+"""
 
             st.session_state.messages = []
             st.session_state.round = 0
@@ -305,7 +285,7 @@ if (
     and st.session_state.focus_area
 ):
 
-    # FIRST QUESTION
+    # ---------------- FIRST QUESTION ---------------- #
 
     if st.session_state.round == 0:
 
@@ -328,20 +308,18 @@ if (
 
     for msg in st.session_state.messages:
 
-        # ---------------- AI MESSAGE ---------------- #
+        # ---------------- ASSISTANT MESSAGE ---------------- #
 
         if msg["role"] == "assistant":
 
             with st.chat_message(
                 "assistant",
-                avatar="https://cdn-icons-png.flaticon.com/512/4140/4140048.png"
+                avatar="https://cdn-icons-png.flaticon.com/512/4712/4712109.png"
             ):
 
                 st.markdown(
                     msg["content"]
                 )
-
-                # REALTIME BROWSER VOICE
 
                 latest_ai_message = ""
 
@@ -368,30 +346,45 @@ if (
 
                     const text = `{escaped_text}`;
 
-                    window.speechSynthesis.cancel();
+                    function speakMessage() {{
 
-                    const speech = new SpeechSynthesisUtterance(text);
+                        window.speechSynthesis.cancel();
 
-                    const voices = window.speechSynthesis.getVoices();
+                        const speech =
+                            new SpeechSynthesisUtterance(text);
 
-                    let femaleVoice =
-                        voices.find(v =>
-                            v.name.includes("Samantha")
-                        ) ||
-                        voices.find(v =>
-                            v.name.includes("Google UK English Female")
-                        ) ||
-                        voices.find(v =>
-                            v.name.includes("Female")
-                        ) ||
-                        voices[0];
+                        const voices =
+                            window.speechSynthesis.getVoices();
 
-                    speech.voice = femaleVoice;
+                        let femaleVoice =
+                            voices.find(v =>
+                                v.name.includes("Samantha")
+                            ) ||
+                            voices.find(v =>
+                                v.name.includes("Google UK English Female")
+                            ) ||
+                            voices[0];
 
-                    speech.rate = 1;
-                    speech.pitch = 1;
+                        speech.voice = femaleVoice;
 
-                    window.speechSynthesis.speak(speech);
+                        speech.rate = 1;
+                        speech.pitch = 1;
+
+                        window.speechSynthesis.speak(speech);
+                    }}
+
+                    if (
+                        speechSynthesis.getVoices().length === 0
+                    ) {{
+
+                        speechSynthesis.onvoiceschanged = speakMessage;
+
+                    }} else {{
+
+                        setTimeout(() => {{
+                            speakMessage();
+                        }}, 300);
+                    }}
 
                     </script>
                     """
@@ -409,34 +402,32 @@ if (
 
             with st.chat_message(
                 "user",
-                avatar="https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                avatar="https://cdn-icons-png.flaticon.com/512/9131/9131529.png"
             ):
 
                 st.markdown(
                     msg["content"]
                 )
 
-                # FEEDBACK
-
                 if "feedback" in msg:
 
                     feedback = msg["feedback"]
 
+                    positive_feedback = feedback[
+                        "positive_feedback"
+                    ][:120]
+
+                    improvement_feedback = feedback[
+                        "improvement_feedback"
+                    ][:120]
+
                     st.success(
-                        feedback["positive_feedback"]
+                        positive_feedback
                     )
 
                     st.warning(
-                        feedback["improvement_feedback"]
+                        improvement_feedback
                     )
-
-                    with st.expander(
-                        "See Better Answer"
-                    ):
-
-                        st.write(
-                            feedback["ideal_answer"]
-                        )
 
     # ---------------- INPUT SECTION ---------------- #
 
@@ -462,13 +453,13 @@ if (
 
     if audio or typed_answer:
 
-        # TYPED ANSWER
+        # ---------------- TYPED ANSWER ---------------- #
 
         if typed_answer:
 
             user_answer = typed_answer
 
-        # VOICE ANSWER
+        # ---------------- VOICE ANSWER ---------------- #
 
         else:
 
@@ -487,7 +478,7 @@ if (
                 temp_audio_path
             )
 
-        # LAST QUESTION
+        # ---------------- LAST QUESTION ---------------- #
 
         last_question = ""
 
@@ -501,14 +492,66 @@ if (
 
                 break
 
-        # EVALUATE ANSWER
+        # ---------------- STOP INTERVIEW ---------------- #
+
+        exit_keywords = [
+            "stop",
+            "end interview",
+            "finish interview",
+            "i am done",
+            "i'm done",
+            "can we stop",
+            "that's all",
+            "quit",
+            "end practice"
+        ]
+
+        if any(
+            keyword in user_answer.lower()
+            for keyword in exit_keywords
+        ):
+
+            st.success(
+                "Interview Ended Successfully."
+            )
+
+            final_feedback = generate_feedback(
+                st.session_state.history
+            )
+
+            st.session_state.feedback = final_feedback
+
+            st.markdown(
+                "## Final Interview Report"
+            )
+
+            st.write(
+                final_feedback
+            )
+
+            pdf_path = generate_pdf(
+                final_feedback
+            )
+
+            with open(pdf_path, "rb") as file:
+
+                st.download_button(
+                    label="Download PDF Report",
+                    data=file,
+                    file_name="Interview_Report.pdf",
+                    mime="application/pdf"
+                )
+
+            st.stop()
+
+        # ---------------- EVALUATE ANSWER ---------------- #
 
         evaluation = evaluate_answer(
             last_question,
             user_answer
         )
 
-        # ADD USER MESSAGE WITH FEEDBACK
+        # ---------------- STORE USER MESSAGE ---------------- #
 
         st.session_state.messages.append({
 
@@ -519,21 +562,21 @@ if (
             "feedback": evaluation
         })
 
-        # SAVE HISTORY
+        # ---------------- SAVE HISTORY ---------------- #
 
         st.session_state.history += f"""
 
-        Interviewer:
-        {last_question}
+Interviewer:
+{last_question}
 
-        Candidate:
-        {user_answer}
+Candidate:
+{user_answer}
 
-        """
+"""
 
-        # NEXT QUESTION
+        # ---------------- NEXT QUESTION ---------------- #
 
-        if st.session_state.round < 5:
+        if st.session_state.round < 15:
 
             next_question = ask_question(
                 st.session_state.target_role,
@@ -552,7 +595,7 @@ if (
 
             st.rerun()
 
-        # FINAL ROUND
+        # ---------------- FINAL ROUND ---------------- #
 
         else:
 
@@ -564,18 +607,22 @@ if (
                 "Generating final interview report..."
             )
 
-            feedback = generate_feedback(
+            final_feedback = generate_feedback(
                 st.session_state.history
             )
 
-            st.session_state.feedback = feedback
+            st.session_state.feedback = final_feedback
 
-            st.markdown("## Final Interview Report")
+            st.markdown(
+                "## Final Interview Report"
+            )
 
-            st.write(feedback)
+            st.write(
+                final_feedback
+            )
 
             pdf_path = generate_pdf(
-                feedback
+                final_feedback
             )
 
             with open(pdf_path, "rb") as file:
