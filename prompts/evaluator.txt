@@ -27,5 +27,5 @@ Format:
   "improvement_feedback": "",
   "ideal_answer": "",
   "follow_up_needed": true,
-  "difficulty_level": "easy"
+  "difficulty_level": "easy | medium | hard"
 }
