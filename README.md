@@ -104,7 +104,7 @@ The AI dynamically simplifies questions when needed.
 
 ```bash
 git clone https://github.com/sharavisshinde03/MockMate-AI.git
-cd mockmate-ai
+cd MockMate-AI
 ```
 
 ---
@@ -340,6 +340,25 @@ You can also explain how it improves personalization.
 
 ---
 
+## Overall Candidate Feedback
+
+### Overall Summary
+The candidate demonstrated strong practical understanding of AI application development, conversational systems, and adaptive workflows. Their answers were structured, technically clear, and confidently communicated.
+
+### Strengths
+- Strong project explanation skills
+- Good understanding of conversational AI workflows
+- Clear communication and structured thinking
+
+### Areas for Improvement
+- Could explain architecture decisions in more depth
+- Can improve scalability and optimization explanations
+
+### Final Advice
+Continue building real-world AI applications and focus on system design thinking. Your practical understanding already creates a strong foundation for AI engineering roles.
+
+---
+
 # 2. Weak Candidate — DevOps Engineer Intern
 
 ## Interviewer
@@ -382,6 +401,25 @@ Try explaining continuous integration and deployment separately.
 
 ---
 
+## Overall Candidate Feedback
+
+### Overall Summary
+The candidate demonstrated beginner-level understanding of DevOps concepts and communicated honestly about limited practical experience. They showed awareness of core tools but need stronger implementation knowledge.
+
+### Strengths
+- Honest communication
+- Basic understanding of Docker and CI/CD
+- Willingness to learn technical concepts
+
+### Areas for Improvement
+- Needs more hands-on DevOps practice
+- Can improve technical depth and structured explanations
+
+### Final Advice
+Focus on building small deployment projects using Docker, GitHub Actions, and cloud platforms. Practical implementation experience will significantly improve confidence and technical understanding.
+
+---
+
 # 3. Tricky Edge Case — Cloud Engineer Intern
 
 ## Interviewer
@@ -421,6 +459,25 @@ You can also mention root cause analysis after restoring services.
 ### Better Answer
 
 “I would review logs, identify the failing service, restore availability if required, and then investigate the root cause to prevent future failures.”
+
+---
+
+## Overall Candidate Feedback
+
+### Overall Summary
+The candidate initially showed limited confidence in cloud concepts but improved while discussing practical exposure and debugging approaches. Their responses reflected a growing understanding of cloud fundamentals.
+
+### Strengths
+- Demonstrated self-learning initiative
+- Good debugging mindset
+- Basic understanding of cloud services
+
+### Areas for Improvement
+- Needs deeper cloud implementation experience
+- Can improve confidence while explaining concepts
+
+### Final Advice
+Continue practicing with cloud deployment projects and focus on understanding core AWS services practically. Consistent hands-on learning will strengthen both confidence and technical clarity.
 
 ---
 
