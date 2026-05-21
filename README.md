@@ -103,7 +103,7 @@ The AI dynamically simplifies questions when needed.
 ## 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-username/mockmate-ai.git
+git clone https://github.com/sharavisshinde03/MockMate-AI.git
 cd mockmate-ai
 ```
 
