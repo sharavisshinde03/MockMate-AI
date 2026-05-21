@@ -547,4 +547,5 @@ MIT License
 
 # Author
 
-Built with AI-powered multi-agent orchestration and adaptive interview intelligence.
+Sharavi Shinde
+
