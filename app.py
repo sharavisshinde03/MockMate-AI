@@ -48,19 +48,15 @@ section[data-testid="stSidebar"] {
 }
 
 .stButton>button {
-
     width: 100%;
     height: 52px;
-
     border: none;
     border-radius: 14px;
-
     background: linear-gradient(
         90deg,
         #2563EB,
         #7C3AED
     );
-
     color: white;
     font-size: 16px;
     font-weight: 600;
@@ -68,37 +64,27 @@ section[data-testid="stSidebar"] {
 
 .stTextInput input,
 .stTextArea textarea {
-
     background-color: #111827;
     color: white;
     border-radius: 12px;
 }
 
 .stSelectbox div[data-baseweb="select"] {
-
     background-color: #111827;
     border-radius: 12px;
 }
 
 [data-testid="stChatMessage"] {
-
     background: rgba(255,255,255,0.03);
-
     border: 1px solid rgba(255,255,255,0.06);
-
     border-radius: 18px;
-
     padding: 18px;
-
     margin-bottom: 20px;
 }
 
 .stChatInput textarea {
-
     background: #111827 !important;
-
     color: white !important;
-
     border-radius: 14px !important;
 }
 
@@ -164,8 +150,6 @@ with st.sidebar:
             "Business Analyst Intern",
             "Cybersecurity Analyst Intern",
             "UI/UX Designer Intern",
-            "Marketing Intern",
-            "HR Intern",
             "Software Engineer",
             "Frontend Developer",
             "Backend Developer",
@@ -174,13 +158,6 @@ with st.sidebar:
             "Data Scientist",
             "Machine Learning Engineer",
             "AI Engineer",
-            "DevOps Engineer",
-            "Cloud Engineer",
-            "Product Manager",
-            "Business Analyst",
-            "Cybersecurity Analyst",
-            "UI/UX Designer",
-            "HR Interview",
             "Custom"
         ]
     )
@@ -203,8 +180,7 @@ with st.sidebar:
             "Behavioral Interview",
             "Mixed Interview",
             "System Design",
-            "HR Round",
-            "Problem Solving"
+            "HR Round"
         ]
     )
 
@@ -229,12 +205,6 @@ with st.sidebar:
                 "Please enter your qualifications."
             )
 
-        elif not focus_area.strip():
-
-            st.sidebar.error(
-                "Please select a focus area."
-            )
-
         else:
 
             st.session_state.started = True
@@ -255,8 +225,8 @@ with st.sidebar:
 
             st.session_state.history = """
 Start the interview naturally.
-Avoid greetings and introductions.
-Ask concise realistic interview questions.
+Ask concise realistic questions.
+Ask one question at a time.
 """
 
             st.session_state.messages = []
@@ -264,7 +234,9 @@ Ask concise realistic interview questions.
             st.session_state.feedback = ""
             st.session_state.last_spoken = ""
 
-# ---------------- MAIN UI ---------------- #
+            st.rerun()
+
+# ---------------- MAIN TITLE ---------------- #
 
 st.markdown(
     "<div class='main-title'>AI Voice Mock Interview Coach</div>",
@@ -276,14 +248,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ---------------- INTERVIEW FLOW ---------------- #
+# ---------------- INTERVIEW ---------------- #
 
-if (
-    st.session_state.started
-    and st.session_state.target_role
-    and st.session_state.qualifications
-    and st.session_state.focus_area
-):
+if st.session_state.started:
 
     # ---------------- FIRST QUESTION ---------------- #
 
@@ -308,7 +275,7 @@ if (
 
     for msg in st.session_state.messages:
 
-        # ---------------- ASSISTANT MESSAGE ---------------- #
+        # ---------------- BOT ---------------- #
 
         if msg["role"] == "assistant":
 
@@ -321,9 +288,13 @@ if (
                     msg["content"]
                 )
 
+                # ---------------- SPEAK BOT ---------------- #
+
                 latest_ai_message = ""
 
-                for m in reversed(st.session_state.messages):
+                for m in reversed(
+                    st.session_state.messages
+                ):
 
                     if m["role"] == "assistant":
 
@@ -356,16 +327,13 @@ if (
                         const voices =
                             window.speechSynthesis.getVoices();
 
-                        let femaleVoice =
+                        let robotVoice =
                             voices.find(v =>
-                                v.name.includes("Samantha")
-                            ) ||
-                            voices.find(v =>
-                                v.name.includes("Google UK English Female")
+                                v.name.includes("Google UK English")
                             ) ||
                             voices[0];
 
-                        speech.voice = femaleVoice;
+                        speech.voice = robotVoice;
 
                         speech.rate = 1;
                         speech.pitch = 1;
@@ -377,7 +345,8 @@ if (
                         speechSynthesis.getVoices().length === 0
                     ) {{
 
-                        speechSynthesis.onvoiceschanged = speakMessage;
+                        speechSynthesis.onvoiceschanged =
+                            speakMessage;
 
                     }} else {{
 
@@ -396,7 +365,7 @@ if (
 
                     st.session_state.last_spoken = msg["content"]
 
-        # ---------------- USER MESSAGE ---------------- #
+        # ---------------- USER ---------------- #
 
         else:
 
@@ -413,13 +382,15 @@ if (
 
                     feedback = msg["feedback"]
 
-                    positive_feedback = feedback[
-                        "positive_feedback"
-                    ][:120]
+                    positive_feedback = feedback.get(
+                        "positive_feedback",
+                        "Good effort."
+                    )
 
-                    improvement_feedback = feedback[
-                        "improvement_feedback"
-                    ][:120]
+                    improvement_feedback = feedback.get(
+                        "improvement_feedback",
+                        "Try adding slightly more detail."
+                    )
 
                     st.success(
                         positive_feedback
@@ -429,7 +400,42 @@ if (
                         improvement_feedback
                     )
 
-    # ---------------- INPUT SECTION ---------------- #
+                    # ---------------- BETTER ANSWER ---------------- #
+
+                    ideal_answer_prompt = f"""
+You are an AI interview coach.
+
+Question:
+{feedback.get("question", "")}
+
+Generate:
+- a short ideal interview answer
+- beginner-friendly
+- realistic
+- concise
+- maximum 5 lines
+
+Do NOT evaluate the candidate.
+Only provide a strong sample answer.
+"""
+
+                    ideal_answer = ask_question(
+                        st.session_state.target_role,
+                        st.session_state.qualifications,
+                        st.session_state.focus_area,
+                        ideal_answer_prompt,
+                        ""
+                    )
+
+                    with st.expander(
+                        "See Better Answer"
+                    ):
+
+                        st.info(
+                            ideal_answer
+                        )
+
+    # ---------------- INPUT ---------------- #
 
     st.markdown("## Answer the Question")
 
@@ -437,29 +443,27 @@ if (
         "Type your answer here..."
     )
 
-    st.markdown(
-        "#### Voice Input"
-    )
+    st.markdown("#### Voice Input")
 
     audio = mic_recorder(
         start_prompt="Start Speaking",
-        stop_prompt="Recording...",
+        stop_prompt="Stop Recording",
         just_once=True,
         use_container_width=True,
         key="voice_recorder"
     )
 
-    # ---------------- PROCESS USER INPUT ---------------- #
+    # ---------------- PROCESS INPUT ---------------- #
 
     if audio or typed_answer:
 
-        # ---------------- TYPED ANSWER ---------------- #
+        # ---------------- TEXT ---------------- #
 
         if typed_answer:
 
             user_answer = typed_answer
 
-        # ---------------- VOICE ANSWER ---------------- #
+        # ---------------- VOICE ---------------- #
 
         else:
 
@@ -494,21 +498,19 @@ if (
 
         # ---------------- STOP INTERVIEW ---------------- #
 
-        exit_keywords = [
+        stop_words = [
             "stop",
             "end interview",
             "finish interview",
             "i am done",
             "i'm done",
-            "can we stop",
-            "that's all",
             "quit",
-            "end practice"
+            "can we stop"
         ]
 
         if any(
-            keyword in user_answer.lower()
-            for keyword in exit_keywords
+            word in user_answer.lower()
+            for word in stop_words
         ):
 
             st.success(
@@ -518,8 +520,6 @@ if (
             final_feedback = generate_feedback(
                 st.session_state.history
             )
-
-            st.session_state.feedback = final_feedback
 
             st.markdown(
                 "## Final Interview Report"
@@ -544,14 +544,16 @@ if (
 
             st.stop()
 
-        # ---------------- EVALUATE ANSWER ---------------- #
+        # ---------------- EVALUATE ---------------- #
 
         evaluation = evaluate_answer(
             last_question,
             user_answer
         )
 
-        # ---------------- STORE USER MESSAGE ---------------- #
+        evaluation["question"] = last_question
+
+        # ---------------- STORE USER MSG ---------------- #
 
         st.session_state.messages.append({
 
@@ -562,7 +564,7 @@ if (
             "feedback": evaluation
         })
 
-        # ---------------- SAVE HISTORY ---------------- #
+        # ---------------- HISTORY ---------------- #
 
         st.session_state.history += f"""
 
@@ -595,7 +597,7 @@ Candidate:
 
             st.rerun()
 
-        # ---------------- FINAL ROUND ---------------- #
+        # ---------------- FINAL REPORT ---------------- #
 
         else:
 
@@ -603,15 +605,9 @@ Candidate:
                 "Interview Completed Successfully."
             )
 
-            st.info(
-                "Generating final interview report..."
-            )
-
             final_feedback = generate_feedback(
                 st.session_state.history
             )
-
-            st.session_state.feedback = final_feedback
 
             st.markdown(
                 "## Final Interview Report"
