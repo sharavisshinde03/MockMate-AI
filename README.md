@@ -480,6 +480,12 @@ The candidate initially showed limited confidence in cloud concepts but improved
 Continue practicing with cloud deployment projects and focus on understanding core AWS services practically. Consistent hands-on learning will strengthen both confidence and technical clarity.
 
 ---
+# Screenshots
+<img width="1438" height="791" alt="Screenshot 2026-05-22 at 2 32 11 AM" src="https://github.com/user-attachments/assets/eb2aa35e-a2f0-4c89-92f7-b5ec1d80be7f" />
+<img width="1450" height="673" alt="Screenshot 2026-05-22 at 2 35 38 AM" src="https://github.com/user-attachments/assets/d6a3f9b0-00b7-427d-88b0-85449fa3df36" />
+<img width="1470" height="707" alt="Screenshot 2026-05-22 at 2 36 55 AM" src="https://github.com/user-attachments/assets/f5b2861b-f004-4564-8217-323913ebc9d6" />
+
+---
 
 # Future Improvements
 
