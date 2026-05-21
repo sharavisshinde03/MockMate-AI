@@ -256,12 +256,28 @@ if st.session_state.started:
 
     if st.session_state.round == 0:
 
+        resume_context = ""
+
+        if st.session_state.resume_text.strip():
+            resume_context = st.session_state.resume_text
+        else:
+            resume_context = """
+No resume was uploaded.
+
+IMPORTANT:
+- Do NOT mention resume
+- Do NOT mention internships
+- Do NOT mention projects
+- Do NOT assume experience
+unless the candidate explicitly mentions them.
+"""
+
         first_question = ask_question(
             st.session_state.target_role,
             st.session_state.qualifications,
             st.session_state.focus_area,
             st.session_state.history,
-            st.session_state.resume_text
+            resume_context
         )
 
         st.session_state.messages.append({
@@ -287,8 +303,6 @@ if st.session_state.started:
                 st.markdown(
                     msg["content"]
                 )
-
-                # ---------------- SPEAK BOT ---------------- #
 
                 latest_ai_message = ""
 
@@ -384,12 +398,12 @@ if st.session_state.started:
 
                     positive_feedback = feedback.get(
                         "positive_feedback",
-                        "Good effort."
+                        "Good explanation of your approach."
                     )
 
                     improvement_feedback = feedback.get(
                         "improvement_feedback",
-                        "Try adding slightly more detail."
+                        "You can make the answer slightly more structured."
                     )
 
                     st.success(
@@ -402,37 +416,30 @@ if st.session_state.started:
 
                     # ---------------- BETTER ANSWER ---------------- #
 
-                    ideal_answer_prompt = f"""
-You are an AI interview coach.
-
-Question:
-{feedback.get("question", "")}
-
-Generate:
-- a short ideal interview answer
-- beginner-friendly
-- realistic
-- concise
-- maximum 5 lines
-
-Do NOT evaluate the candidate.
-Only provide a strong sample answer.
-"""
-
-                    ideal_answer = ask_question(
-                        st.session_state.target_role,
-                        st.session_state.qualifications,
-                        st.session_state.focus_area,
-                        ideal_answer_prompt,
+                    better_answer = feedback.get(
+                        "better_answer",
                         ""
                     )
+
+                    remove_phrases = [
+                        "Next question:",
+                        "Let's move on",
+                        "Follow-up question:",
+                        "Can you explain",
+                        "Can you walk me through"
+                    ]
+
+                    for phrase in remove_phrases:
+
+                        if phrase in better_answer:
+                            better_answer = better_answer.split(phrase)[0]
 
                     with st.expander(
                         "See Better Answer"
                     ):
 
                         st.info(
-                            ideal_answer
+                            better_answer.strip()
                         )
 
     # ---------------- INPUT ---------------- #
@@ -457,13 +464,9 @@ Only provide a strong sample answer.
 
     if audio or typed_answer:
 
-        # ---------------- TEXT ---------------- #
-
         if typed_answer:
 
             user_answer = typed_answer
-
-        # ---------------- VOICE ---------------- #
 
         else:
 
@@ -553,7 +556,7 @@ Only provide a strong sample answer.
 
         evaluation["question"] = last_question
 
-        # ---------------- STORE USER MSG ---------------- #
+        # ---------------- STORE USER MESSAGE ---------------- #
 
         st.session_state.messages.append({
 
@@ -580,12 +583,28 @@ Candidate:
 
         if st.session_state.round < 15:
 
+            resume_context = ""
+
+            if st.session_state.resume_text.strip():
+                resume_context = st.session_state.resume_text
+            else:
+                resume_context = """
+No resume was uploaded.
+
+IMPORTANT:
+- Do NOT mention resume
+- Do NOT mention internships
+- Do NOT mention projects
+- Do NOT assume experience
+unless the candidate explicitly mentions them.
+"""
+
             next_question = ask_question(
                 st.session_state.target_role,
                 st.session_state.qualifications,
                 st.session_state.focus_area,
                 st.session_state.history,
-                st.session_state.resume_text
+                resume_context
             )
 
             st.session_state.messages.append({
