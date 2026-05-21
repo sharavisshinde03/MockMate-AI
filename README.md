@@ -24,6 +24,34 @@ The platform focuses on creating a supportive and realistic interview experience
 
 ---
 
+# Candidate Inputs
+
+The candidate provides:
+
+- Target role  
+  Examples:
+  - Product Manager
+  - Data Analyst
+  - Frontend Engineer Intern
+  - AI Engineer Intern
+  - DevOps Engineer Intern
+
+- Optional background or resume snippet
+  - short introduction
+  - project experience
+  - technologies used
+
+- Focus area for the session
+  - Technical Interview
+  - Behavioral Interview
+  - Case Study
+  - Mixed Interview
+  - HR Round
+
+The AI interviewer dynamically adapts questions using this information.
+
+---
+
 # Features
 
 ## Adaptive AI Interviewer
@@ -191,6 +219,12 @@ MockMate AI uses a multi-agent architecture where each AI agent performs a speci
 - Handles nervous candidates supportively
 - Focuses on communication and clarity
 
+### Structured Output
+Returns JSON for:
+- positive feedback
+- improvement feedback
+- better answer generation
+
 ---
 
 ## 3. Coach Agent
@@ -201,6 +235,9 @@ MockMate AI uses a multi-agent architecture where each AI agent performs a speci
 - Identifies improvement areas
 - Provides actionable final advice
 - Generates downloadable PDF report
+
+### Structured Output
+Returns Markdown-formatted reports for clean rendering inside Streamlit.
 
 ---
 
@@ -480,10 +517,14 @@ The candidate initially showed limited confidence in cloud concepts but improved
 Continue practicing with cloud deployment projects and focus on understanding core AWS services practically. Consistent hands-on learning will strengthen both confidence and technical clarity.
 
 ---
+
 # Screenshots
-<img width="1438" height="791" alt="Screenshot 2026-05-22 at 2 32 11 AM" src="https://github.com/user-attachments/assets/eb2aa35e-a2f0-4c89-92f7-b5ec1d80be7f" />
-<img width="1450" height="673" alt="Screenshot 2026-05-22 at 2 35 38 AM" src="https://github.com/user-attachments/assets/d6a3f9b0-00b7-427d-88b0-85449fa3df36" />
-<img width="1470" height="707" alt="Screenshot 2026-05-22 at 2 36 55 AM" src="https://github.com/user-attachments/assets/f5b2861b-f004-4564-8217-323913ebc9d6" />
+
+<img width="1438" height="791" alt="Screenshot 2026-05-22 at 2 32 11 AM" src="https://github.com/user-attachments/assets/eb2aa35e-a2f0-4c89-92f7-b5ec1d80be7f" />
+
+<img width="1450" height="673" alt="Screenshot 2026-05-22 at 2 35 38 AM" src="https://github.com/user-attachments/assets/d6a3f9b0-00b7-427d-88b0-85449fa3df36" />
+
+<img width="1470" height="707" alt="Screenshot 2026-05-22 at 2 36 55 AM" src="https://github.com/user-attachments/assets/f5b2861b-f004-4564-8217-323913ebc9d6" />
 
 ---
 
@@ -491,7 +532,6 @@ Continue practicing with cloud deployment projects and focus on understanding co
 
 - Facial expression analysis
 - Confidence scoring
-- AI-generated interview analytics
 - Real-time emotion detection
 - Multi-language interview support
 - Custom interviewer personalities
